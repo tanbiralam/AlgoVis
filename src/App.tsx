@@ -1,3 +1,4 @@
+import { Grid } from "./components/Grid";
 import { PathFindingProvider } from "./context/PathFindingContext";
 import { SpeedProvider } from "./context/SpeedContext";
 import { TileProvider } from "./context/TileContext";
@@ -7,9 +8,9 @@ function App() {
     <PathFindingProvider>
       <TileProvider>
         <SpeedProvider>
-          <h1 className="text-3xl font-bold underline text-blue-400">
-            Hello world!
-          </h1>
+          <div className="h-screen w-screen flex flex-col">
+            <Grid />
+          </div>
         </SpeedProvider>
       </TileProvider>
     </PathFindingProvider>
