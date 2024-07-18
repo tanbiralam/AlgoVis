@@ -19,9 +19,9 @@ export const runMazeAlgorithm = async ({
   setIsDisabled: (isDisabled: boolean) => void;
   speed: SpeedType;
 }) => {
-  if (maze == "BINARY_TREE") {
+  if (maze === "BINARY_TREE") {
     await binaryTree(grid, startTile, endTile, setIsDisabled, speed);
-  } else if (maze == "RECURSIVE_DIVISION") {
+  } else if (maze === "RECURSIVE_DIVISION") {
     const currentSpeed = SPEEDS.find((s) => s.value === speed)!.value ?? 2;
     await constructsBorder(grid, startTile, endTile);
     await recursiveDivision({

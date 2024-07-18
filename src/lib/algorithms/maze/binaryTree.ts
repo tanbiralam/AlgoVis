@@ -28,18 +28,26 @@ export const binaryTree = async (
     }
   }
 
-  for (let row = 1; row < MAX_ROWS; row++) {
-    for (let col = 1; col < MAX_COLS; col++) {
+  for (let row = 1; row < MAX_ROWS; row += 2) {
+    // Iterate through odd rows starting from 1
+    for (let col = 1; col < MAX_COLS; col += 2) {
+      // Iterate through odd columns starting from 1
       if (row === MAX_ROWS - 2 && col === MAX_COLS - 2) {
+        //skip the bottom right corner
         continue;
-      } else if (row === MAX_ROWS - 1) {
+      } else if (row === MAX_ROWS - 2) {
+        // If it's the last row, destroy a wall to the right
         await destroyWall(grid, row, col, 1, speed);
       } else if (col === MAX_COLS - 2) {
+        // If it's the last columns, destroy a wall below
+
         await destroyWall(grid, row, col, 0, speed);
       } else {
+        // Otherwise, randomly destroy a wall to the right or below
+
         await destroyWall(grid, row, col, getRandInt(0, 2), speed);
       }
     }
   }
-  setIsDisabled(false);
+  setIsDisabled(false); //Re Enable the UI
 };
