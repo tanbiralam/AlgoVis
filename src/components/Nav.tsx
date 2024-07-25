@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { MutableRefObject, useState } from "react";
 import { usePathfinding } from "../hooks/usePathfinding";
 import { useTile } from "../hooks/useTile";
-import { MAZES, PATHFINDING_ALGORITHMS } from "../utils/constants";
+import {
+  EXTENDED_SLEEP_TIME,
+  MAZES,
+  PATHFINDING_ALGORITHMS,
+  SLEEP_TIME,
+  SPEEDS,
+} from "../utils/constants";
 import { resetGrid } from "../utils/ResetGrid";
 import { AlgorithmType, MazeType } from "../utils/types";
 import { Select } from "./Select";
@@ -9,8 +15,13 @@ import { runMazeAlgorithm } from "../utils/runMazeAlgorithm";
 import { useSpeed } from "../hooks/useSpeed";
 import { PlayButton } from "./PlayButton";
 import { runPathfindingAlgorithm } from "../utils/runPathfindingAlgorithm";
+import { animatePath } from "../utils/animatePath";
 
-export function Nav() {
+export function Nav({
+  isVisualizingRunningRef,
+}: {
+  isVisualizingRunningRef: MutableRefObject<boolean>;
+}) {
   const [isDisabled, setIsDisabled] = useState(false);
   const {
     maze,
@@ -60,8 +71,17 @@ export function Nav() {
       endTile,
     });
 
-    console.log("traversedTiles", traversedTiles);
-    console.log("path", path);
+    animatePath(traversedTiles, path, startTile, endTile, speed);
+    setIsDisabled(true);
+    isVisualizingRunningRef.current = true;
+
+    setTimeout(() => {
+      const newGrid = grid.slice();
+      setGrid(newGrid);
+      setIsGraphVisualized(true);
+      setIsDisabled(false);
+      isVisualizingRunningRef.current = false;
+    }, SLEEP_TIME * (traversedTiles.length + SLEEP_TIME * 2) + EXTENDED_SLEEP_TIME * (path.length + 60) * SPEEDS.find((s) => s.value === speed)!.value);
   };
   return (
     <div className="flex items-center justify-center min-h-[4.5rem] border-b shadow-gray-600 sm:px-5 px-0">
