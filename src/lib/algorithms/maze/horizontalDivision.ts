@@ -21,26 +21,28 @@ export async function horizontalDivision({
   col: number;
   height: number;
   width: number;
-  setIsDisabled: (isDisabled: boolean) => void;
+  setIsDisabled: (disabled: boolean) => void;
   speed: SpeedType;
 }) {
   const makeWallAt = row + getRandInt(0, height - 1) * 2 + 1;
-  const makePassageAt = col + getRandInt(0, width) * 2 + 1;
+  const makePassageAt = col + getRandInt(0, width) * 2;
 
-  for (let i = 0; i < 2 * width - 1; i++) {
+  for (let i = 0; i < 2 * width - 1; i += 1) {
     if (makePassageAt !== col + i) {
       if (
         !isEqual(grid[makeWallAt][col + i], startTile) &&
         !isEqual(grid[makeWallAt][col + i], endTile)
       ) {
         grid[makeWallAt][col + i].isWall = true;
+
         document.getElementById(
           `${makeWallAt}-${col + i}`
         )!.className = `${WALL_TILE_STYLE} animate-wall`;
-        await sleep(10 * SPEEDS.find((s) => s.value === speed)!.value - 1);
+        await sleep(10 * SPEEDS.find((s) => s.value === speed)!.value - 5);
       }
     }
   }
+
   await recursiveDivision({
     grid,
     startTile,
@@ -52,7 +54,6 @@ export async function horizontalDivision({
     setIsDisabled,
     speed,
   });
-
   await recursiveDivision({
     grid,
     startTile,

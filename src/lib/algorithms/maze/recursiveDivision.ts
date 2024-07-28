@@ -20,7 +20,7 @@ export default async function recursiveDivision({
   col: number;
   height: number;
   width: number;
-  setIsDisabled: (isDisabled: boolean) => void;
+  setIsDisabled: (disabled: boolean) => void;
   speed: SpeedType;
 }) {
   if (height <= 1 || width <= 1) {
